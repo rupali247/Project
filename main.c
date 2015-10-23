@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include<sys/types.h>
@@ -14,40 +14,57 @@ int printmenu() {
 	"4 : Append a record to the list\n"\
 	"5 : Find number of students\n"\
 	"6 : Creating Id\n"\
-	/*"7 : Read student record from file\n"\*/
+	"7 : Read student record from file\n"\
+	"8 : Modify a record\n"\
+	"9 : Find total marks\n"\
+	"10 : Find number of students who appeared for exam\n"\
 	"..............................................................\n");
 	scanf("%d", &choice);
 	return choice;
 }
-int main() {
+int main(int argc, char *argv[]) {
 	list q;
+	FILE *fp;
+	listt qq;
 	record d;
+	marks v;
 	record *ptr, *pt;
 	init(&q);
+	initt(&qq);
 	char a[32];
 	char br[16];
-	int m, posi, choice, roll, size;
+	int m, posi, choice, roll, size, s1, s2, s3, s4, num;
+	int yr;
 	while(1) {
 		print(&q);
 		choice = printmenu();
 		switch(choice) {
 			case 1 :
-				scanf("%s %d %s %d", a, &m, br, &posi);
-				Add(&q, a, m, br, posi);
+				scanf("%[^\n] %d %s %d %d", a, &m, br, &posi, &yr);
+				Add(&q, a, m, br, yr, posi);
 				break;
 			case 2 : 
 				scanf("%d", &posi);
-				pt = delet(&q, posi);
-				printf("name:%s\n MIS:%d\n branch:%s\n", pt->name, pt->MIS, pt->branch);
+				if(delet(&q, posi)) {
+					pt = delet(&q, posi);
+					printf("name:%s\n MIS:%d\n branch:%s\n Year :%d\n", pt->name, pt->MIS, pt->branch, pt->year);
+				}
+				else {
+					printf("RECORD LIST EMPTY");
+				}
 				break;
 			case 3 :
 				scanf("%d", &roll);
-				ptr = search(&q, roll);
-				printf("%s %d %s\n", ptr->name, ptr->MIS, ptr->branch);
+				if(ptr = search(&q, roll)) {
+					printf("\nname :%s\tMIS :%d\tbranch :%s\tYEAR :%d\n", ptr->name, ptr->MIS, ptr->branch, ptr->year);
+				}
+				else {
+					printf("\nRECORD NOT FOUND\n");
+				}
 				break;
 			case 4 :
-				scanf("%s %d %s", a, &m, br);
-				append(&q, a, m, br);
+				scanf("%[^\n] %d %s %d", a, &m, br, &yr);
+				append(&q, a, m, br, yr);
 				break;
 			case 5 :
 				size = length(&q);
@@ -58,10 +75,27 @@ int main() {
 				creatingID(&q, roll);
 				break;
 			/*case 7 :
-				InsertFromFile(&q, argv[1]);
+				fp = fopen(argv[1], "r");
+				scanf("%d", &posi);
+				fscanf(fp, d.name, d.MIS, d.branch, d.year);
+				Add(&q, d.name, d.MIS, d.branch, posi, d.year);
 				break;*/
-
-				
+			case 8 :
+				scanf("%[^\n] %d %s %d", a, &m, br, &yr);
+				Modify(&q, m, a, br, yr);
+				break;
+			case 9 :
+				scanf(" %d %d %d %d %d %d", &m, &s1, &s2, &s3, &s4, &posi);
+				totalmarks(&qq, &q, m, s1, s2, s3, s4, posi);
+				printt(&qq);
+				break;
+			case 10 :
+				num = lengthh(&qq);
+				printf("no of students who appeared foe exam : %d\n", num);
+				break;
+			/*case 11 :
+				sort(&qq);
+				printt(&qq);*/			
 		}
 	}
 }
