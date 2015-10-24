@@ -3,7 +3,7 @@ project: data.o main.o
 main.o: main.c data.h
 	cc -c main.c 
 data.o: data.c data.h
-	cc -c data.c -o
+	cc -c data.c 
 
 
 
