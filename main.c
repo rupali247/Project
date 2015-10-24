@@ -33,20 +33,21 @@ int main(int argc, char *argv[]) {
 	initt(&qq);
 	char a[32];
 	char br[16];
-	int m, posi, choice, roll, size, s1, s2, s3, s4, num;
+	int m, posi, choice, roll, size, s1, s2, s3, s4, num, posii;
 	int yr;
 	while(1) {
 		print(&q);
 		choice = printmenu();
 		switch(choice) {
 			case 1 :
-				scanf("%[^\n] %d %s %d %d", a, &m, br, &posi, &yr);
-				Add(&q, a, m, br, yr, posi);
+				printf("Enter the Name, MIS, Branch, Year and position :\n");
+				scanf(" %[^\n]%d%s%d%d", a, &m, br, &yr, &posi);
+				Add(&q, a, m, br, posi, yr);
 				break;
 			case 2 : 
-				scanf("%d", &posi);
-				if(delet(&q, posi)) {
-					pt = delet(&q, posi);
+				printf("Enter the position of the record to be deleted :\n");
+				scanf("%d", &posii);
+				if(pt = delet(&q, posii)) {
 					printf("name:%s\n MIS:%d\n branch:%s\n Year :%d\n", pt->name, pt->MIS, pt->branch, pt->year);
 				}
 				else {
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]) {
 				}
 				break;
 			case 3 :
+				printf("Enter the MIS of student :\n");
 				scanf("%d", &roll);
 				if(ptr = search(&q, roll)) {
 					printf("\nname :%s\tMIS :%d\tbranch :%s\tYEAR :%d\n", ptr->name, ptr->MIS, ptr->branch, ptr->year);
@@ -63,7 +65,8 @@ int main(int argc, char *argv[]) {
 				}
 				break;
 			case 4 :
-				scanf("%[^\n] %d %s %d", a, &m, br, &yr);
+				printf("Enter the Name, MIS, Branch and Year :\n");
+				scanf(" %[^\n]%d%s%d", a, &m, br, &yr);
 				append(&q, a, m, br, yr);
 				break;
 			case 5 :
@@ -71,6 +74,7 @@ int main(int argc, char *argv[]) {
 				printf("no of students : %d\n", size);
 				break;
 			case 6 :
+				printf("Enter the MIS of student :\n");
 				scanf("%d", &roll);
 				creatingID(&q, roll);
 				break;
@@ -81,12 +85,14 @@ int main(int argc, char *argv[]) {
 				Add(&q, d.name, d.MIS, d.branch, posi, d.year);
 				break;*/
 			case 8 :
+				printf("Enter the Name, MIS, Branch and Year of student:\n");
 				scanf("%[^\n] %d %s %d", a, &m, br, &yr);
 				Modify(&q, m, a, br, yr);
 				break;
 			case 9 :
+				printf("Enter the MIS and Marks of four subjects:\n");
 				scanf(" %d %d %d %d %d %d", &m, &s1, &s2, &s3, &s4, &posi);
-				totalmarks(&qq, &q, m, s1, s2, s3, s4, posi);
+				totalmarks(&qq, m, s1, s2, s3, s4, posi);
 				printt(&qq);
 				break;
 			case 10 :

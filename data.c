@@ -19,14 +19,15 @@ void initt(listt *ll) {
 void print(list *l) {
 	node *p;
 	p = l->head;
-	printf("NAME				MIS		BRANCH		YEAR\n");
+	printf("NAME			MIS		BRANCH		YEAR\n");
 	while(p != l->tail) {
-		printf("%s		  %d		%s		%d\n ", p->d.name, p->d.MIS, p->d.branch, p->d.year);
+		printf("%s		%d		%s		%d\n ", p->d.name, p->d.MIS, p->d.branch, p->d.year);
 		p = p->next;
 	}
 	if(p) {
-		if(p->next == NULL)
-		printf("%s		  %d		%s		%d\n", p->d.name, p->d.MIS, p->d.branch, p->d.year);
+		if(p->next == NULL) {
+			printf("%s		%d		%s		%d\n", p->d.name, p->d.MIS, p->d.branch, p->d.year);
+		}
 	}
 }
 
@@ -138,7 +139,7 @@ record *delet(list *l, int pos) {
 		(l->length)--;
 		return retval;
 	}
-	if(pos == (l->length - 1)) {
+	else if(pos == (l->length - 1)) {
 		p = p->prev;
 		p->next = NULL;
 		tmp = l->tail;
@@ -157,6 +158,7 @@ record *delet(list *l, int pos) {
 	retval->MIS = p->d.MIS;
 	retval->branch = p->d.branch;
 	retval->year = p->d.year;
+	printf("%s %d %s %d\n", p->d.name, p->d.MIS, p->d.branch, p->d.year);
 	free(p);
 	(l->length)--;
 	return retval;	
@@ -246,6 +248,14 @@ void creatingID(list *l, int MIS) {
  	}
 }
 
+/*void InsertFromFile(list *l, char *fname) {
+	FILE *fp;
+	record a;
+	fp = fopen(argv[1], "r");
+       while((fscanf(fp,"%s%d%s%d",a.name,&a.MIS,a.branch, &a.year)!=EOF) 	
+	
+}*/
+
 void Modify(list *l, int MIS, char *name, char *branch, int year) {
 	node *pp;
 	pp = l->head;
@@ -272,7 +282,7 @@ void Modify(list *l, int MIS, char *name, char *branch, int year) {
  	}		
 }
 
-void totalmarks(listt *ll, list *l, int MIS, int sub1, int sub2, int sub3, int sub4, int poss) {
+void totalmarks(listt *ll, int MIS, int sub1, int sub2, int sub3, int sub4, int poss) {
 	nnode *pp, *tmpp;
 	int j;
 	if(poss < 0 || poss > ll->lengthh)		
@@ -287,7 +297,6 @@ void totalmarks(listt *ll, list *l, int MIS, int sub1, int sub2, int sub3, int s
 	if(ll->headd == NULL) {
 		ll->headd = ll->taill = tmpp;
 		ll->lengthh = 1;
-		l->length = 1;
 		tmpp->nnext = tmpp->pprev = NULL;
 		return;
 	}
@@ -301,7 +310,6 @@ void totalmarks(listt *ll, list *l, int MIS, int sub1, int sub2, int sub3, int s
 		pp->pprev = tmpp;
 		ll->headd = tmpp;
 		(ll->lengthh)++;
-		(l->length)++;
 		return;
 	}
 	if(poss == ll->lengthh) {
@@ -310,7 +318,6 @@ void totalmarks(listt *ll, list *l, int MIS, int sub1, int sub2, int sub3, int s
 		pp->nnext = tmpp;
 		ll->taill = tmpp;
 		(ll->lengthh)++;
-		(l->length)++;
 		return;
 	}
 	tmpp->nnext = pp->nnext;
@@ -318,7 +325,8 @@ void totalmarks(listt *ll, list *l, int MIS, int sub1, int sub2, int sub3, int s
 	pp->nnext->pprev = tmpp;
 	pp->nnext = tmpp;
 	(ll->lengthh)++;
-	(l->length)++;
+	return;
+
 }
 
 
