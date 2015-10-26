@@ -12,9 +12,9 @@ int printmenu() {
 	"2 : Delete student record\n"\
 	"3 : Search a record\n"\
 	"4 : Append a record to the list\n"\
-	"5 : Find number of students\n"\
+	"5 : Find number of students in student records list\n"\
 	"6 : Creating Id\n"\
-	"7 : Read student record from file\n"\
+	"7 : Read student record from file and add it\n"\
 	"8 : Modify a record\n"\
 	"9 : number of students who appeared for exam\n"\
 	"10 : sort total\n"\
@@ -119,26 +119,29 @@ int main(int argc, char *argv[]) {
 				num = length1(&q1);
 				printf("no of students who appeared for final exam : %d\n", num);
 				break;
+			//case 10 :
+				//sort();
+				//break;
 			case 11 :
-				printf("Enter MIS and T1 marks of 4 subjects and MIS before which you wish to enter the record :\n");
+				printf("Enter MIS and T1 marks of 4 subjects ,MIS before which you wish to enter the record and the semister :\n");
 				scanf("%d%d%d%d%d%d%d",&roll,&s1,&s2,&s3,&s4,&m, &i);
 				T1Marks(&q1,roll,s1,s2,s3,s4,m,i);
 				printT1(&q1, i);
 				break;	
 			case 12 :
-				printf("Enter MIS and T2 marks of 4 subjects :\n");
+				printf("Enter MIS and T2 marks of 4 subjects and the semister :\n");
 				scanf("%d%d%d%d%d%d",&roll,&s1,&s2,&s3,&s4, &i);
 				T2Marks(&q1,roll,s1,s2,s3,s4,i);
 				printT2(&q1, i);
 				break;
 			case 13 :
-				printf("Enter MIS and ESE marks of 4 subjects :\n");
+				printf("Enter MIS and ESE marks of 4 subjects and the semister :\n");
 				scanf("%d%d%d%d%d%d",&roll,&s1,&s2,&s3,&s4,&i);
 				ESEMarks(&q1,roll,s1,s2,s3,s4,i);
 				printESE(&q1, i);
 				break;
 			case 14 :
-				printf("Enter the MIS :");
+				printf("Enter the MIS and the semister :");
 				scanf("%d%d", &MIS, &i);
 				Total(&q1, MIS,i, fp1);
 				printTOT(&q1, i);

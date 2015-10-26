@@ -51,11 +51,11 @@ void print2(list2 *l2) {
 	}
 }
 
-int length(list *l) {
+int length(list *l) {       /*returns number of student records*/
 	return l->length;
 }
 
-int length1(list1 *l1) {
+int length1(list1 *l1) {   /*returns number of students who appeared for ESE exam*/
 	return l1->length1;
 }
 
@@ -72,7 +72,7 @@ void append(list *l, char *name, int MIS, char *branch, int year, FILE *fp) {
 		l->head = l->tail = tmp;
 		tmp->prev = tmp->next = NULL;
 		l->length++;
-		fwrite(&(tmp->d), sizeof(tmp->d), 1, fp);
+		fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 		return;
 	}
 		p = l->tail;
@@ -81,11 +81,11 @@ void append(list *l, char *name, int MIS, char *branch, int year, FILE *fp) {
 		p->next = tmp;
 		l->tail = tmp;
 		l->length++;
-		fwrite(&(tmp->d), sizeof(tmp->d), 1, fp);
+		fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 		return;
 }
  
-record *search(list *l, int MIS) {
+record *search(list *l, int MIS) {          /*searches a record of student*/
 	node *pp;
 	record *ret;
 	ret = (record*)malloc(sizeof(record));
@@ -119,7 +119,7 @@ record *search(list *l, int MIS) {
  	}
 }
 
-personal *search2(list2 *l2, int MISS) {
+personal *search2(list2 *l2, int MISS) {       /*searches a personal record of student*/
 	node2 *pp2;
 	personal *ret2;
 	ret2 = (personal*)malloc(sizeof(personal));
@@ -187,7 +187,7 @@ void creatingID(list *l, int MIS) {
  	}
 }
 
-void Modify(list *l, int MIS, char *name, char *branch, int year) {
+void Modify(list *l, int MIS, char *name, char *branch, int year) {              
 	node *pp;
 	pp = l->head;
 	if(l->head == NULL) {
@@ -220,7 +220,7 @@ void Modify(list *l, int MIS, char *name, char *branch, int year) {
  	}		
 }
 
-void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp) {
+void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp) {          
 	node *p, *tmp;
 	int j;
 	tmp = (node *)malloc(sizeof(node));
@@ -234,7 +234,7 @@ void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp
 		l->head = l->tail = tmp;
 		l->length = 1;
 		tmp->next = tmp->prev = NULL;
-		fwrite(&(tmp->d), sizeof(tmp->d), 1, fp);
+		fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 		return;
 	}
 	p = l->head;
@@ -252,7 +252,7 @@ void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp
 		p->prev = tmp;
 		l->head = tmp;
 		(l->length)++;
-		fwrite(&(tmp->d), sizeof(tmp->d), 1, fp);
+		fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 		return;
 	}
 	tmp->next = p;
@@ -260,10 +260,10 @@ void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp
 	p->prev->next = tmp;
 	p->prev = tmp;
 	(l->length)++;
-	fwrite(&(tmp->d), sizeof(tmp->d), 1, fp);
+	fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 }
 
-record *delet(list *l, int pos) {
+record *delet(list *l, int pos) {                 /*deletes a record*/
 	node *p, *tmp;
 	record *retval;
 	retval = (record *)malloc(sizeof(record));
@@ -364,7 +364,7 @@ void Modify2(list2 *l2, int MISS, char *name, int mobile, char *address) {
  	}		
 }
 
-void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, FILE *fp2) {
+void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, FILE *fp2) {    /**/
 	node2 *p2, *tmp2;
 	int j;
 	tmp2 = (node2 *)malloc(sizeof(node2));
@@ -378,7 +378,7 @@ void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, F
 		l2->head2 = l2->tail2 = tmp2;
 		l2->length2 = 1;
 		tmp2->next2 = tmp2->prev2 = NULL;
-		fwrite(&(tmp2->f), sizeof(tmp2->f), 1, fp2);
+		fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
 		return;
 	}
 	p2 = l2->head2;
@@ -396,7 +396,7 @@ void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, F
 		p2->prev2 = tmp2;
 		l2->head2 = tmp2;
 		(l2->length2)++;
-		fwrite(&(tmp2->f), sizeof(tmp2->f), 1, fp2);
+		fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
 		return;
 	}
 	tmp2->next2 = p2;
@@ -404,7 +404,7 @@ void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, F
 	p2->prev2->next2 = tmp2;
 	p2->prev2 = tmp2;
 	(l2->length2)++;
-	fwrite(&(tmp2->f), sizeof(tmp2->f), 1, fp2);
+	fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
 }
 
 personal *delet2(list2 *l2, int loc) {
@@ -475,7 +475,7 @@ personal *delet2(list2 *l2, int loc) {
 	
 }
 
-void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem) {
+void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem) {    /*adds T1 marks of a student for a particular semister*/
 	node1 *p1, *tmp1;
 	int j;
 	tmp1 = (node1 *)malloc(sizeof(node1));
@@ -499,7 +499,7 @@ void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem
 	}
 	if(l1->head1 == p1) {
 		tmp1->next1 = p1;
-		tmp1->prev1 = NULL;
+		tmp1->prev1 = NULL;fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
 		p1->prev1 = tmp1;
 		l1->head1 = tmp1;
 		return;
@@ -511,7 +511,7 @@ void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem
 		
 }
 
-void printT1(list1 *l1, int sem) {
+void printT1(list1 *l1, int sem) {                /*prints T1 marks of a student*/
 	node1 *p1;
 	p1 = l1->head1;
 	printf("SEMISTER : %d\n", sem);
@@ -527,7 +527,7 @@ void printT1(list1 *l1, int sem) {
 	}
 }	
 
-void T2Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem) {
+void T2Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem) {    /*adds T2 marks of a student for a particular semister*/
 	node1 *p1;
 	p1 = l1->head1;
 	if(l1->head1 == NULL) {
@@ -560,7 +560,7 @@ void T2Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem) {
  	}	
 }
 
-void printT2(list1 *l1, int sem) {
+void printT2(list1 *l1, int sem) {            /*prints T2 marks of a student*/
 	node1 *p1;
 	p1 = l1->head1;
 	printf("SEMISTER : %d\n", sem);
@@ -576,7 +576,7 @@ void printT2(list1 *l1, int sem) {
 	}
 }	
 
-void ESEMarks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem) {
+void ESEMarks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem) {       /*adds ESE marks of a student for a particular semister*/ 
 	node1 *p1;
 	p1 = l1->head1;
 	if(l1->head1 == NULL) {
@@ -609,7 +609,7 @@ void ESEMarks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem) {
  	}				
 }
 
-void printESE(list1 *l1, int sem) {
+void printESE(list1 *l1, int sem) {         /*prints ESE marks of a student*/
 	node1 *p1;
 	p1 = l1->head1;
 	printf("SEMISTER :%d\n", sem);
@@ -625,7 +625,7 @@ void printESE(list1 *l1, int sem) {
 	}
 }	
 
-void Total(list1 *l1, int MIS, int sem, FILE *fp1) {
+void Total(list1 *l1, int MIS, int sem, FILE *fp1) {        /*adds total marks of a student for a particular semister*/ 
 	node1 *p1;
 	p1 = l1->head1;
 	if(l1->head1 == NULL) {
@@ -639,7 +639,7 @@ void Total(list1 *l1, int MIS, int sem, FILE *fp1) {
 			p1->s[sem].subj3.total =  p1->s[sem].subj3.t1 + p1->s[sem].subj3.t2 + p1->s[sem].subj3.ESE;
 			p1->s[sem].subj4.total =  p1->s[sem].subj4.t1 + p1->s[sem].subj4.t2 + p1->s[sem].subj4.ESE;
 			(l1->length1)++;
-			fwrite(&(p1->s[sem]), sizeof(p1->s[sem]), 1 , fp1);
+			fprintf(fp1, "%d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.total, p1->s[sem].subj2.total, p1->s[sem].subj3.total, p1->s[sem].subj4.total );
 			return;
 			
 		}
@@ -653,7 +653,8 @@ void Total(list1 *l1, int MIS, int sem, FILE *fp1) {
 				p1->s[sem].subj3.total =  p1->s[sem].subj3.t1 + p1->s[sem].subj3.t2 + p1->s[sem].subj3.ESE;
 				p1->s[sem].subj4.total =  p1->s[sem].subj4.t1 + p1->s[sem].subj4.t2 + p1->s[sem].subj4.ESE;
 				(l1->length1)++;
-				fwrite(&(p1->s[sem]), sizeof(p1->s[sem]), 1 , fp1);
+				fprintf(fp1, "%d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.total, p1->s[sem].subj2.total, p1->s[sem].subj3.total, p1->s[sem].subj4.total );
+				
 			}
 			else {
 				printf("INVALID ENTRY\n");
@@ -662,7 +663,7 @@ void Total(list1 *l1, int MIS, int sem, FILE *fp1) {
  	}
 }
 
-void printTOT(list1 *l1, int sem) {
+void printTOT(list1 *l1, int sem) {      /*prints TOTAl marks of a student*/
 	node1 *p1;
 	p1 = l1->head1;
 	printf("SEMISTER : %d\n", sem);
@@ -680,7 +681,7 @@ void printTOT(list1 *l1, int sem) {
 }	
 
 
-void insertfromfile(list *l, FILE *fp3) {
+void insertfromfile(list *l, FILE *fp3) {    /*reads student records from list and add it*/
 	char d[10];
 	char n[10];
 	char h[16];
@@ -691,7 +692,7 @@ void insertfromfile(list *l, FILE *fp3) {
 	if(fp3 == NULL) {
 		printf("file not opened\n");
 	}
-	while(fgets(buf, 60, fp3) != 0 ) {
+	while(fgets(buf, 60, fp3) != 0 ) {            /*reads a line from a file*/
 		sscanf(buf, "%s%s%d%s%d", d, n, &f1, h, &f2);
 		strcat(d,n);	
 		tmp = (node *)malloc(sizeof(node));
