@@ -499,7 +499,7 @@ void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem
 	}
 	if(l1->head1 == p1) {
 		tmp1->next1 = p1;
-		tmp1->prev1 = NULL;
+		tmp1->prev1 = NULL;fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
 		p1->prev1 = tmp1;
 		l1->head1 = tmp1;
 		return;
