@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 					printf("name:%s\n MIS:%d\n branch:%s\n Year :%d\n", pt->name, pt->MIS, pt->branch, pt->year);
 				}
 				else {
-					printf("RECORD LIST EMPTY");
+					printf("RECORD LIST EMPTY\n");
 				}
 				print(&q);
 				break;
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
 					printf("name:%s\n MIS:%d\n mobile:%d\n address :%s\n", pt2->name, pt2->MISS, pt2->mobile, pt2->address);
 				}
 				else {
-					printf("RECORD LIST EMPTY");
+					printf("RECORD LIST EMPTY\n");
 				}
 				print2(&q2);
 				break;
