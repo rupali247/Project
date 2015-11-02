@@ -24,14 +24,14 @@ void init2(list2 *l2) {
 void print(list *l) {
 	node *p;
 	p = l->head;
-	printf("NAME		MIS		BRANCH		YEAR\n");
+	printf("NAME				MIS	BRANCH		YEAR\n");
 	while(p != l->tail) {
-		printf("%s		%d		%s		%d\n ", p->d.name, p->d.MIS, p->d.branch, p->d.year);
+		printf("%s	%d	%s	%d\n ", p->d.name, p->d.MIS, p->d.branch, p->d.year);
 		p = p->next;
 	}
 	if(p) {
 		if(p->next == NULL) {
-			printf("%s		%d		%s		%d\n", p->d.name, p->d.MIS, p->d.branch, p->d.year);
+			printf("%s	%d	%s	%d\n", p->d.name, p->d.MIS, p->d.branch, p->d.year);
 		}
 	}
 }
@@ -39,14 +39,14 @@ void print(list *l) {
 void print2(list2 *l2) {
 	node2 *p2;
 	p2 = l2->head2;
-	printf("NAME		MIS		MOBILENO		ADDRESS\n");
+	printf("NAME				MIS		MOBILENO		EMAIL ID\n");
 	while(p2 != l2->tail2) {
-		printf("%s		%d		%d		%s\n ", p2->f.name, p2->f.MISS, p2->f.mobile, p2->f.address);
+		printf("%s	%d		%d		%s\n ", p2->f.name, p2->f.MISS, p2->f.mobile, p2->f.email_Id);
 		p2 = p2->next2;
 	}
 	if(p2) {
 		if(p2->next2 == NULL) {
-			printf("%s		%d		%d		%s\n", p2->f.name, p2->f.MISS, p2->f.mobile, p2->f.address);
+			printf("%s	%d		%d		%s\n", p2->f.name, p2->f.MISS, p2->f.mobile, p2->f.email_Id);
 		}
 	}
 }
@@ -131,7 +131,7 @@ personal *search2(list2 *l2, int MISS) {       /*searches a personal record of s
 		if (pp2->f.MISS == MISS) {
 			ret2->MISS = pp2->f.MISS;
 			ret2->name = pp2->f.name;
-			ret2->address = pp2->f.address;
+			ret2->email_Id = pp2->f.email_Id;
 			ret2->mobile = pp2->f.mobile;
 			return ret2;
 		}
@@ -142,7 +142,7 @@ personal *search2(list2 *l2, int MISS) {       /*searches a personal record of s
 			if(MISS == pp2->f.MISS) {
 				ret2->MISS = pp2->f.MISS;
 				ret2->name = pp2->f.name;
-				ret2->address = pp2->f.address;
+				ret2->email_Id = pp2->f.email_Id;
 				ret2->mobile = pp2->f.mobile;
 				return ret2;
 				
@@ -163,22 +163,23 @@ void creatingID(list *l, int MIS) {
 	}
 	while(pp != l->tail) {
 		if(MIS == pp->d.MIS) {
-			printf(".................................................................................\n..");
-			printf("........................IDENTITY CARD.........................\n");
-			printf("..................COLLEGE OF ENGINEERING PUNE......................\n");
-			printf("NAME : %s\n MIS : %d\n BRANCH : %s\n YEAR : %d\n", pp->d.name, pp->d.MIS, pp->d.branch, pp->d.year);
-			printf("....................................................................................\n");
+			printf("		.................................................................................\n..");
+			printf("		........................IDENTITY CARD.........................\n");
+			printf("		..................COLLEGE OF ENGINEERING PUNE......................\n");
+			printf("		NAME : %s\n\t\t MIS : %d\n\t\t BRANCH : %s\n\t\t YEAR : %d\n", pp->d.name, pp->d.MIS, pp->d.branch, pp->d.year);
+			printf("		....................................................................................\n");
+			return;
 		}
 	pp = pp->next;
 	}
 	if(pp) {
 		if(pp->next == NULL) {
 			if(MIS == pp->d.MIS) {
-				printf("..................................................................................\n");
-				printf(".....................IDENTITY CARD.....................\n");
-				printf("................COLLEGE OF ENGINEERING PUNE...............\n");
-				printf("NAME :%s\n MIS : %d\n BRANCH : %s\n YEAR : %d\n", pp->d.name, pp->d.MIS, pp->d.branch, pp->d.year);
-				printf("..................................................................................\n");		
+				printf("		..................................................................................\n");
+				printf("		.....................IDENTITY CARD.....................\n");
+				printf("		................COLLEGE OF ENGINEERING PUNE...............\n");
+				printf("		NAME :%s\n\t\t MIS : %d\n\t\t BRANCH : %s\n\t\t YEAR : %d\n", pp->d.name, pp->d.MIS, pp->d.branch, pp->d.year);
+				printf("		..................................................................................\n");		
 			}
 			else {
 				printf("NO RECORD FOUND\n");
@@ -187,12 +188,31 @@ void creatingID(list *l, int MIS) {
  	}
 }
 
-void Modify(list *l, int MIS, char *name, char *branch, int year) {              
+void Modify(list *l, int MIS, char *name, char *branch, int year, FILE *fp, FILE *fp6) {              
 	node *pp;
+	int  n, i;
+	char d[16];
+	char c[16];
+	char h[32];
+	char b[16];
+	int f1, f2;
+	char buf[100];
+	rewind(fp);
+	while(fgets(buf, 100, fp) != 0 ) {  /*reads a line from a file*/
+		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
+		if(f1 != MIS) {
+			fprintf(fp6, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+		}
+		else if(f1 == MIS)  {
+			fprintf(fp6, "%s %d %s %d\n", name, MIS, branch, year);
+		}		
+	}
+	remove("k.txt");
+	rename("n.txt","k.txt");
 	pp = l->head;
 	if(l->head == NULL) {
 		printf("LIST EMPTY\n");
-		return ;
+		return;
 	}
 	while(pp != l->tail) {
 		if (pp->d.MIS == MIS) {
@@ -200,8 +220,7 @@ void Modify(list *l, int MIS, char *name, char *branch, int year) {
 			pp->d.year = year;
 			strcpy(pp->d.name, name);
 			strcpy(pp->d.branch, branch);
-			return;
-			
+			return;	
 		}
 	pp = pp->next;
 	}
@@ -222,7 +241,6 @@ void Modify(list *l, int MIS, char *name, char *branch, int year) {
 
 void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp) {          
 	node *p, *tmp;
-	int j;
 	tmp = (node *)malloc(sizeof(node));
 	tmp->d.name = (char *)malloc(strlen(name) + 1);
 	strcpy(tmp->d.name, name);
@@ -259,15 +277,29 @@ void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp
 	tmp->prev = p->prev;
 	p->prev->next = tmp;
 	p->prev = tmp;
-	(l->length)++;
+	(l->length)++;	
 	fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 }
 
-record *delet(list *l, int pos) {                 /*deletes a record*/
+record *delet(list *l, int pos, FILE *fp, FILE *fp4) {                 /*deletes a record*/
 	node *p, *tmp;
 	record *retval;
+	rewind(fp);
+	char d[16];
+	char c[16];
+	char b[16];
+	char h[32];
+	int f1, f2;
+	char buf[100];
+	while(fgets(buf, 100, fp) != 0 ) {  /*reads a line from a file*/
+		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
+		if(f1 != pos) {
+			fprintf(fp4, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+		}	
+	}
+	remove("k.txt");
+	rename("d.txt","k.txt");
 	retval = (record *)malloc(sizeof(record));
-	int j;
 	if(l->head == NULL) {
 		l->length = 0;
 		return NULL;
@@ -329,8 +361,27 @@ record *delet(list *l, int pos) {                 /*deletes a record*/
 	return retval;	
 }
 
-void Modify2(list2 *l2, int MISS, char *name, int mobile, char *address) {
+void Modify2(list2 *l2, int MISS, char *name, int mobile, char *email_Id, FILE *fp2, FILE *fp8) {
 	node2 *pp2;
+	char d[16];
+	char c[16];
+	char b[16];
+	char h[32];
+	int f1, f2;
+	char buf[100];
+	rewind(fp2);
+	while(fgets(buf, 100, fp2) != 0 ) {  /*reads a line from a file*/
+		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
+		if(f1 != MISS) {
+			fprintf(fp8, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+		}
+		else if(f1 == MISS)  {
+			fprintf(fp8, "%s %d %s %d\n", name, MISS, email_Id, mobile);
+		}
+				
+	}
+	remove("c.txt");
+	rename("w.txt","c.txt");
 	pp2 = l2->head2;
 	if(l2->head2 == NULL) {
 		printf("LIST EMPTY\n");
@@ -341,9 +392,8 @@ void Modify2(list2 *l2, int MISS, char *name, int mobile, char *address) {
 			pp2->f.MISS = MISS;
 			pp2->f.mobile = mobile;
 			strcpy(pp2->f.name, name);
-			strcpy(pp2->f.address, address);
-			return;
-			
+			strcpy(pp2->f.email_Id, email_Id);
+			return;	
 		}
 	pp2 = pp2->next2;
 	}
@@ -353,9 +403,8 @@ void Modify2(list2 *l2, int MISS, char *name, int mobile, char *address) {
 				pp2->f.MISS = MISS;
 				pp2->f.mobile = mobile;
 				strcpy(pp2->f.name, name);
-				strcpy(pp2->f.address, address);
+				strcpy(pp2->f.email_Id, email_Id);
 				return;
-			
 			}
 			else {
 				printf("INVALID ENTRY\n");
@@ -364,21 +413,21 @@ void Modify2(list2 *l2, int MISS, char *name, int mobile, char *address) {
  	}		
 }
 
-void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, FILE *fp2) {    /**/
+void Add2(list2 *l2, char *name, int MISS, int mobile, char *email_Id, int loc, FILE *fp2) {   
 	node2 *p2, *tmp2;
 	int j;
 	tmp2 = (node2 *)malloc(sizeof(node2));
 	tmp2->f.name = (char *)malloc(strlen(name) + 1);
 	strcpy(tmp2->f.name, name);
-	tmp2->f.address = (char *)malloc(strlen(address) + 1);
-	strcpy(tmp2->f.address, address);
+	tmp2->f.email_Id = (char *)malloc(strlen(email_Id) + 1);
+	strcpy(tmp2->f.email_Id, email_Id);
 	tmp2->f.MISS = MISS;
 	tmp2->f.mobile = mobile;
 	if(l2->head2 == NULL ) {
 		l2->head2 = l2->tail2 = tmp2;
 		l2->length2 = 1;
 		tmp2->next2 = tmp2->prev2 = NULL;
-		fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
+		fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.email_Id, tmp2->f.mobile);
 		return;
 	}
 	p2 = l2->head2;
@@ -396,7 +445,7 @@ void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, F
 		p2->prev2 = tmp2;
 		l2->head2 = tmp2;
 		(l2->length2)++;
-		fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
+		fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.email_Id, tmp2->f.mobile);
 		return;
 	}
 	tmp2->next2 = p2;
@@ -404,12 +453,27 @@ void Add2(list2 *l2, char *name, int MISS, int mobile, char *address, int loc, F
 	p2->prev2->next2 = tmp2;
 	p2->prev2 = tmp2;
 	(l2->length2)++;
-	fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.address, tmp2->f.mobile);
+	fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.email_Id, tmp2->f.mobile);
 }
 
-personal *delet2(list2 *l2, int loc) {
+personal *delet2(list2 *l2, int loc, FILE *fp2, FILE *fp9) {
 	node2 *p2, *tmp2;
 	personal *retval2;
+	rewind(fp2);
+	char d[16];
+	char c[16];
+	char b[16];
+	char h[32];
+	int f1, f2;
+	char buf[100];
+	while(fgets(buf, 100, fp2) != 0 ) {  /*reads a line from a file*/
+		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
+		if(f1 != loc) {
+			fprintf(fp9, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+		}	
+	}
+	remove("c.txt");
+	rename("s.txt","c.txt");
 	retval2 = (personal *)malloc(sizeof(personal));
 	int j;
 	if(l2->head2 == NULL) {
@@ -419,7 +483,6 @@ personal *delet2(list2 *l2, int loc) {
 	p2 = l2->head2;
 	while(p2->f.MISS != loc) {
 		if(p2 == l2->tail2 && p2->f.MISS != loc) {
-			printf("INVALID ENTRY\n");
 			return NULL;
 		}
 		p2 = p2->next2;
@@ -429,7 +492,7 @@ personal *delet2(list2 *l2, int loc) {
 		{
 			retval2->name = p2->f.name;
 			retval2->MISS = p2->f.MISS;
-			retval2->address = p2->f.address;
+			retval2->email_Id = p2->f.email_Id;
 			retval2->mobile = p2->f.mobile;
 			l2->head2 = NULL;
 			l2->tail2 = NULL;
@@ -443,7 +506,7 @@ personal *delet2(list2 *l2, int loc) {
 		l2->head2 = p2;
 		retval2->name = p2->f.name;
 		retval2->MISS = p2->f.MISS;
-		retval2->address = p2->f.address;
+		retval2->email_Id = p2->f.email_Id;
 		retval2->mobile = p2->f.mobile;
 		free(tmp2);
 		(l2->length2)--;
@@ -456,23 +519,21 @@ personal *delet2(list2 *l2, int loc) {
 		l2->tail2 = p2;
 		retval2->name = p2->f.name;
 		retval2->MISS = p2->f.MISS;
-		retval2->address = p2->f.address;
+		retval2->email_Id = p2->f.email_Id;
 		retval2->mobile = p2->f.mobile;
 		free(tmp2);
 		(l2->length2)--;
 		return retval2;
-		
 	}	
 	p2->prev2->next2 = p2->next2;
 	p2->next2->prev2 = p2->prev2;
 	retval2->name = p2->f.name;
 	retval2->MISS = p2->f.MISS;
-	retval2->address = p2->f.address;
+	retval2->email_Id = p2->f.email_Id;
 	retval2->mobile = p2->f.mobile;
 	free(p2);
 	(l2->length2)--;
 	return retval2;	
-	
 }
 
 void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem) {    /*adds T1 marks of a student for a particular semester*/
@@ -604,7 +665,6 @@ void ESEMarks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem) {    
 			else {
 				printf("INVALID ENTRY\n");
 			}
-			
 		}
  	}				
 }
@@ -621,7 +681,6 @@ void printESE(list1 *l1, int sem) {         /*prints ESE marks of a student*/
 	if(p1) {
 		if(p1->next1 == NULL)
 		printf("%d	%d	%d	%d	%d\n ",p1->s[sem].MIS,p1->s[sem].subj1.ESE,p1->s[sem].subj2.ESE,p1->s[sem].subj3.ESE,p1->s[sem].subj4.ESE);
-		
 	}
 }	
 
@@ -639,9 +698,8 @@ void Total(list1 *l1, int MIS, int sem, FILE *fp1) {        /*adds total marks o
 			p1->s[sem].subj3.total =  p1->s[sem].subj3.t1 + p1->s[sem].subj3.t2 + p1->s[sem].subj3.ESE;
 			p1->s[sem].subj4.total =  p1->s[sem].subj4.t1 + p1->s[sem].subj4.t2 + p1->s[sem].subj4.ESE;
 			(l1->length1)++;
-			fprintf(fp1, "%d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.total, p1->s[sem].subj2.total, p1->s[sem].subj3.total, p1->s[sem].subj4.total );
+			fprintf(fp1, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
 			return;
-			
 		}
 	p1 = p1->next1;
 	}
@@ -653,8 +711,7 @@ void Total(list1 *l1, int MIS, int sem, FILE *fp1) {        /*adds total marks o
 				p1->s[sem].subj3.total =  p1->s[sem].subj3.t1 + p1->s[sem].subj3.t2 + p1->s[sem].subj3.ESE;
 				p1->s[sem].subj4.total =  p1->s[sem].subj4.t1 + p1->s[sem].subj4.t2 + p1->s[sem].subj4.ESE;
 				(l1->length1)++;
-				fprintf(fp1, "%d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.total, p1->s[sem].subj2.total, p1->s[sem].subj3.total, p1->s[sem].subj4.total );
-				
+				fprintf(fp1, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
 			}
 			else {
 				printf("INVALID ENTRY\n");
@@ -681,23 +738,31 @@ void printTOT(list1 *l1, int sem) {      /*prints TOTAl marks of a student*/
 }	
 
 
-void insertfromfile(list *l, FILE *fp3) {    /*reads student records from list and add it*/
-	char d[10];
-	char n[10];
+void insertfromfile(list *l, FILE *fp3, FILE *fp) {    /*reads student records from list and add it*/
+	char f[16];
+	char m[16];
+	char s[16];
 	char h[16];
+	char spc[] = " ";
+	
 	int f1, f2;
 	node *p, *tmp;
 	int j;
-	char buf[60];
+	char buf[100];
 	if(fp3 == NULL) {
 		printf("file not opened\n");
 	}
-	while(fgets(buf, 60, fp3) != 0 ) {            /*reads a line from a file*/
-		sscanf(buf, "%s%s%d%s%d", d, n, &f1, h, &f2);
-		strcat(d,n);	
+	while(fgets(buf, 100, fp3) != 0 ) {            /*reads a line from a file*/
+		char str[60] = ""; 		
+		sscanf(buf, "%s%s%s%d%s%d", f, m, s, &f1, h, &f2);
+		strcat(str, f);
+		strcat(str, spc);
+		strcat(str, m);
+		strcat(str, spc);
+		strcat(str, s);
 		tmp = (node *)malloc(sizeof(node));
-		tmp->d.name = (char *)malloc(strlen(d) + 1);
-		strcpy(tmp->d.name, d);
+		tmp->d.name = (char *)malloc(strlen(str) + 1);
+		strcpy(tmp->d.name, str);
 		tmp->d.branch = (char *)malloc(strlen(h) + 1);
 		strcpy(tmp->d.branch, h);
 		tmp->d.MIS = f1;
@@ -706,6 +771,7 @@ void insertfromfile(list *l, FILE *fp3) {    /*reads student records from list a
 			l->head = l->tail = tmp;
 			tmp->prev = tmp->next = NULL;
 			l->length++;
+			fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 			continue;
 		}
 		p = l->tail;
@@ -714,6 +780,56 @@ void insertfromfile(list *l, FILE *fp3) {    /*reads student records from list a
 		p->next = tmp;
 		l->tail = tmp;
 		l->length++;
+		fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 		continue;
-	}	
+	}
+}
+
+void link(list *l, list1 *l1, list2 *l2, int MIS, int sem) {
+	node *pp;
+	node2 *pp2;
+	node1 *p1;
+	pp = l->head;
+	printf("MIS : %d\n", MIS);
+	while(pp != l->tail) {
+		if (pp->d.MIS == MIS) {
+			printf("\nName : %s\tMIS : %d\tBranch : %s\tYear : %d\n", pp->d.name, pp->d.MIS, pp->d.branch, pp->d.year);
+		}
+	pp = pp->next;
+	}
+	if(pp) {
+		if(pp->next == NULL) {
+			if(MIS == pp->d.MIS) {
+				printf("\nName : %s\tMIS : %d\tBranch : %s\tYear : %d\n", pp->d.name, pp->d.MIS, pp->d.branch, pp->d.year);	
+			}
+		}
+ 	}
+	pp2 = l2->head2;
+	while(pp2 != l2->tail2) {
+		if (pp2->f.MISS == MIS) {
+			printf("\nName : %s\tMIS : %d\tEmail Id : %s\tMobile : %d\n", pp2->f.name, pp2->f.MISS, pp2->f.email_Id, pp2->f.mobile);
+		}
+	pp2 = pp2->next2;
+	}
+	if(pp2) {
+		if(pp2->next2 == NULL) {
+			if(MIS == pp2->f.MISS) {
+				printf("\nName : %s\tMIS : %d\tEmail Id : %s\tMobile : %d\n", pp2->f.name, pp2->f.MISS, pp2->f.email_Id, pp2->f.mobile);	
+			}		
+		}
+ 	}
+	p1 = l1->head1;
+	while(p1 != l1->tail1) {
+		if (p1->s[sem].MIS == MIS) {
+			printf("\nMIS: %d\nT1sub1: %d T2sub1: %d ESEsub1: %d Totalsub1: %d\nT1sub2: %d T2sub2: %d ESEsub2: %d Totalsub2: %d\nT1sub3: %d T2sub3: %d ESEsub3: %d Totalsub3: %d\nT1sub4: %d T2sub4: %d ESEsub4: %d Totalsub4: %d\n", p1->s[sem].MIS, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
+		}
+	p1 = p1->next1;
+	}
+	if(p1) {
+		if(p1->next1 == NULL) {
+			if(MIS == p1->s[sem].MIS) {
+				printf("\nMIS: %d\nT1sub1: %d T2sub1: %d ESEsub1: %d Totalsub1: %d\nT1sub2: %d T2sub2: %d ESEsub2: %d Totalsub2: %d\nT1sub3: %d T2sub3: %d ESEsub3: %d Totalsub3: %d\nT1sub4: %d T2sub4: %d ESEsub4: %d Totalsub4: %d\n", p1->s[sem].MIS, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
+			}	
+		}
+ 	}
 }
