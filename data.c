@@ -1,3 +1,20 @@
+/*****************************************************************************
+ * Copyright (C) Rupali Rajendra More morerr14.comp@coep.ac.in
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ *****************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -59,7 +76,7 @@ int length1(list1 *l1) {   /*returns number of students who appeared for ESE exa
 	return l1->length1;
 }
 
-void append(list *l, char *name, int MIS, char *branch, int year, FILE *fp) {
+void append_academic(list *l, char *name, int MIS, char *branch, int year, FILE *fp) { /*add academic record at the end of list and write in file*/
 	node *p, *tmp;
 	tmp = (node *)malloc(sizeof(node));
 	tmp->d.name = (char *)malloc(strlen(name) + 1);
@@ -188,7 +205,7 @@ void creatingID(list *l, int MIS) {
  	}
 }
 
-void Modify(list *l, int MIS, char *name, char *branch, int year, FILE *fp, FILE *fp6) {              
+void Modify_academic(list *l, int MIS, char *name, char *branch, int year, FILE *fp, FILE *fp6) { /*modifies the academic record of a student*/             
 	node *pp;
 	int  n, i;
 	char d[16];
@@ -198,17 +215,17 @@ void Modify(list *l, int MIS, char *name, char *branch, int year, FILE *fp, FILE
 	int f1, f2;
 	char buf[100];
 	rewind(fp);
-	while(fgets(buf, 100, fp) != 0 ) {  /*reads a line from a file*/
+	while(fgets(buf, 100, fp) != 0 ) {  /*reads a line from first file*/
 		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
 		if(f1 != MIS) {
-			fprintf(fp6, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+			fprintf(fp6, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2); /*data is written in second file(except the data to be modified)*/
 		}
 		else if(f1 == MIS)  {
-			fprintf(fp6, "%s %d %s %d\n", name, MIS, branch, year);
+			fprintf(fp6, "%s %d %s %d\n", name, MIS, branch, year); /*modified data is written in second file*/
 		}		
 	}
-	remove("k.txt");
-	rename("n.txt","k.txt");
+	remove("k.txt"); /*first file is removed*/  
+	rename("n.txt","k.txt"); /*second file is renamed as first file*/
 	pp = l->head;
 	if(l->head == NULL) {
 		printf("LIST EMPTY\n");
@@ -239,7 +256,7 @@ void Modify(list *l, int MIS, char *name, char *branch, int year, FILE *fp, FILE
  	}		
 }
 
-void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp) {          
+void Add_academic(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp) {  /*add record before a particular MIS and write in file*/         
 	node *p, *tmp;
 	tmp = (node *)malloc(sizeof(node));
 	tmp->d.name = (char *)malloc(strlen(name) + 1);
@@ -248,7 +265,7 @@ void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp
 	strcpy(tmp->d.branch, branch);
 	tmp->d.MIS = MIS;
 	tmp->d.year = year;
-	if(l->head == NULL ) {
+	if(l->head == NULL ) {    
 		l->head = l->tail = tmp;
 		l->length = 1;
 		tmp->next = tmp->prev = NULL;
@@ -263,7 +280,6 @@ void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp
 		}
 		p = p->next;
 	}
-
 	if(l->head == p) {
 		tmp->next = p;
 		tmp->prev = NULL;
@@ -281,7 +297,7 @@ void Add(list *l, char *name, int MIS, char *branch, int pos, int year, FILE *fp
 	fprintf(fp, "%s %d %s %d\n",tmp->d.name, tmp->d.MIS,tmp->d.branch, tmp->d.year);
 }
 
-record *delet(list *l, int pos, FILE *fp, FILE *fp4) {                 /*deletes a record*/
+record *delet_academic(list *l, int pos, FILE *fp, FILE *fp4) {                 /*deletes a record*/
 	node *p, *tmp;
 	record *retval;
 	rewind(fp);
@@ -291,14 +307,14 @@ record *delet(list *l, int pos, FILE *fp, FILE *fp4) {                 /*deletes
 	char h[32];
 	int f1, f2;
 	char buf[100];
-	while(fgets(buf, 100, fp) != 0 ) {  /*reads a line from a file*/
+	while(fgets(buf, 100, fp) != 0 ) {  /*reads a line from first file*/
 		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
 		if(f1 != pos) {
-			fprintf(fp4, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+			fprintf(fp4, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2); /*all records except the one to be deleted are written in second file*/
 		}	
 	}
-	remove("k.txt");
-	rename("d.txt","k.txt");
+	remove("k.txt"); /*first file is removed*/
+	rename("d.txt","k.txt");  /*second file is renamed as first file*/
 	retval = (record *)malloc(sizeof(record));
 	if(l->head == NULL) {
 		l->length = 0;
@@ -361,7 +377,7 @@ record *delet(list *l, int pos, FILE *fp, FILE *fp4) {                 /*deletes
 	return retval;	
 }
 
-void Modify2(list2 *l2, int MISS, char *name, int mobile, char *email_Id, FILE *fp2, FILE *fp8) {
+void Modify2_personal(list2 *l2, int MISS, char *name, int mobile, char *email_Id, FILE *fp2, FILE *fp8) {
 	node2 *pp2;
 	char d[16];
 	char c[16];
@@ -370,18 +386,18 @@ void Modify2(list2 *l2, int MISS, char *name, int mobile, char *email_Id, FILE *
 	int f1, f2;
 	char buf[100];
 	rewind(fp2);
-	while(fgets(buf, 100, fp2) != 0 ) {  /*reads a line from a file*/
+	while(fgets(buf, 100, fp2) != 0 ) {  /*reads a line from first file*/
 		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
 		if(f1 != MISS) {
-			fprintf(fp8, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+			fprintf(fp8, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2); /*data is written in second file(except one to be modified)*/
 		}
 		else if(f1 == MISS)  {
-			fprintf(fp8, "%s %d %s %d\n", name, MISS, email_Id, mobile);
+			fprintf(fp8, "%s %d %s %d\n", name, MISS, email_Id, mobile); /*modified data os written in second file*/
 		}
 				
 	}
-	remove("c.txt");
-	rename("w.txt","c.txt");
+	remove("c.txt"); /*first file is removed*/
+	rename("w.txt","c.txt"); /*second file renamed as first file*/
 	pp2 = l2->head2;
 	if(l2->head2 == NULL) {
 		printf("LIST EMPTY\n");
@@ -413,7 +429,7 @@ void Modify2(list2 *l2, int MISS, char *name, int mobile, char *email_Id, FILE *
  	}		
 }
 
-void Add2(list2 *l2, char *name, int MISS, int mobile, char *email_Id, int loc, FILE *fp2) {   
+void Add2_personal(list2 *l2, char *name, int MISS, int mobile, char *email_Id, int loc, FILE *fp2) {  /*add personal record before a particular MIS and write in file*/ 
 	node2 *p2, *tmp2;
 	int j;
 	tmp2 = (node2 *)malloc(sizeof(node2));
@@ -438,7 +454,6 @@ void Add2(list2 *l2, char *name, int MISS, int mobile, char *email_Id, int loc, 
 		}
 		p2 = p2->next2;
 	}
-
 	if(l2->head2 == p2) {
 		tmp2->next2 = p2;
 		tmp2->prev2 = NULL;
@@ -456,7 +471,7 @@ void Add2(list2 *l2, char *name, int MISS, int mobile, char *email_Id, int loc, 
 	fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.email_Id, tmp2->f.mobile);
 }
 
-personal *delet2(list2 *l2, int loc, FILE *fp2, FILE *fp9) {
+personal *delet2_personal(list2 *l2, int loc, FILE *fp2, FILE *fp9) {
 	node2 *p2, *tmp2;
 	personal *retval2;
 	rewind(fp2);
@@ -466,14 +481,14 @@ personal *delet2(list2 *l2, int loc, FILE *fp2, FILE *fp9) {
 	char h[32];
 	int f1, f2;
 	char buf[100];
-	while(fgets(buf, 100, fp2) != 0 ) {  /*reads a line from a file*/
-		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2);
+	while(fgets(buf, 100, fp2) != 0 ) {  /*reads a line from first file*/
+		sscanf(buf, "%s %s %s %d %s %d", d, c, b, &f1, h, &f2); 
 		if(f1 != loc) {
-			fprintf(fp9, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);
+			fprintf(fp9, "%s %s %s %d %s %d\n", d, c, b, f1, h, f2);  /*all records except the one to be modified are written in second file*/
 		}	
 	}
-	remove("c.txt");
-	rename("s.txt","c.txt");
+	remove("c.txt"); /*remove first file*/
+	rename("s.txt","c.txt");/*rename second file as first file*/
 	retval2 = (personal *)malloc(sizeof(personal));
 	int j;
 	if(l2->head2 == NULL) {
@@ -504,15 +519,15 @@ personal *delet2(list2 *l2, int loc, FILE *fp2, FILE *fp9) {
 		p2->prev2 = NULL;
 		tmp2 = l2->head2;
 		l2->head2 = p2;
-		retval2->name = p2->f.name;
-		retval2->MISS = p2->f.MISS;
-		retval2->email_Id = p2->f.email_Id;
-		retval2->mobile = p2->f.mobile;
+		retval2->name = tmp2->f.name;
+		retval2->MISS = tmp2->f.MISS;
+		retval2->email_Id = tmp2->f.email_Id;
+		retval2->mobile = tmp2->f.mobile;
 		free(tmp2);
 		(l2->length2)--;
 		return retval2;
 	}
-	else if(p2 = l2->tail2) {
+	else if(p2 == l2->tail2) {
 		p2 = p2->prev2;
 		p2->next2 = NULL;
 		tmp2 = l2->tail2;
@@ -537,8 +552,25 @@ personal *delet2(list2 *l2, int loc, FILE *fp2, FILE *fp9) {
 }
 
 void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem) {    /*adds T1 marks of a student for a particular semester*/
-	node1 *p1, *tmp1;
-	int j;
+	node1 *p1, *p11, *tmp1;
+	int j, i;
+	p1 = l1->head1;
+	p11 = l1->head1;
+	if(l1->head1 != NULL) {
+		while(p11) {
+			for(i = 0; i < 8; i++) {
+				if(p11->s[i].MIS == MIS) {
+					p11->s[sem].MIS = MIS;
+					p11->s[sem].subj1.t1 = m1;
+					p11->s[sem].subj2.t1 = m2;
+					p11->s[sem].subj3.t1 = m3;
+					p11->s[sem].subj4.t1 = m4;
+					return;	
+ 				}
+			}
+			p11 = p11->next1;
+		}
+	}
 	tmp1 = (node1 *)malloc(sizeof(node1));
 	tmp1->s[sem].MIS = MIS;
 	tmp1->s[sem].subj1.t1 = m1;
@@ -550,7 +582,7 @@ void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem
 		tmp1->next1 = tmp1->prev1 = NULL;
 		return;
 	}
-	p1 = l1->head1;
+	
 	while(p1->s[sem].MIS != MI) {
 		if(p1 == l1->tail1 && p1->s[sem].MIS != MI) {
 			printf("The MIS entered is not present in the list\n");
@@ -568,8 +600,7 @@ void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem
 	tmp1->next1 = p1;
 	tmp1->prev1 = p1->prev1;
 	p1->prev1->next1 = tmp1;
-	p1->prev1 = tmp1;
-		
+	p1->prev1 = tmp1;	
 }
 
 void printT1(list1 *l1, int sem) {                /*prints T1 marks of a student*/
@@ -684,7 +715,7 @@ void printESE(list1 *l1, int sem) {         /*prints ESE marks of a student*/
 	}
 }	
 
-void Total(list1 *l1, int MIS, int sem, FILE *fp1) {        /*adds total marks of a student for a particular semester*/ 
+void Total(list1 *l1, int MIS, int sem, FILE *fp1) {        /*adds total marks of a student for a particular semester and write all marks in file*/ 
 	node1 *p1;
 	p1 = l1->head1;
 	if(l1->head1 == NULL) {
@@ -698,7 +729,7 @@ void Total(list1 *l1, int MIS, int sem, FILE *fp1) {        /*adds total marks o
 			p1->s[sem].subj3.total =  p1->s[sem].subj3.t1 + p1->s[sem].subj3.t2 + p1->s[sem].subj3.ESE;
 			p1->s[sem].subj4.total =  p1->s[sem].subj4.t1 + p1->s[sem].subj4.t2 + p1->s[sem].subj4.ESE;
 			(l1->length1)++;
-			fprintf(fp1, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
+			fprintf(fp1, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", p1->s[sem].MIS, sem, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
 			return;
 		}
 	p1 = p1->next1;
@@ -711,7 +742,7 @@ void Total(list1 *l1, int MIS, int sem, FILE *fp1) {        /*adds total marks o
 				p1->s[sem].subj3.total =  p1->s[sem].subj3.t1 + p1->s[sem].subj3.t2 + p1->s[sem].subj3.ESE;
 				p1->s[sem].subj4.total =  p1->s[sem].subj4.t1 + p1->s[sem].subj4.t2 + p1->s[sem].subj4.ESE;
 				(l1->length1)++;
-				fprintf(fp1, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", p1->s[sem].MIS, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
+				fprintf(fp1, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", p1->s[sem].MIS, sem, p1->s[sem].subj1.t1, p1->s[sem].subj1.t2 , p1->s[sem].subj1.ESE, p1->s[sem].subj1.total, p1->s[sem].subj2.t1 , p1->s[sem].subj2.t2 , p1->s[sem].subj2.ESE, p1->s[sem].subj2.total,p1->s[sem].subj3.t1 , p1->s[sem].subj3.t2 , p1->s[sem].subj3.ESE, p1->s[sem].subj3.total, p1->s[sem].subj4.t1 , p1->s[sem].subj4.t2 , p1->s[sem].subj4.ESE, p1->s[sem].subj4.total );
 			}
 			else {
 				printf("INVALID ENTRY\n");
@@ -738,7 +769,7 @@ void printTOT(list1 *l1, int sem) {      /*prints TOTAl marks of a student*/
 }	
 
 
-void insertfromfile(list *l, FILE *fp3, FILE *fp) {    /*reads student records from list and add it*/
+void academicfromfile(list *l, FILE *fp3, FILE *fp) {    /*reads student records from list and add it*/
 	char f[16];
 	char m[16];
 	char s[16];
@@ -785,7 +816,54 @@ void insertfromfile(list *l, FILE *fp3, FILE *fp) {    /*reads student records f
 	}
 }
 
-void link(list *l, list1 *l1, list2 *l2, int MIS, int sem) {
+void personalfromfile(list2 *l2, FILE *fp10, FILE *fp2) {    /*reads student records from list and add it*/
+	char f[16];
+	char m[16];
+	char s[16];
+	char h[32];
+	char spc[] = " ";
+	
+	int f1, f2;
+	node2 *p2, *tmp2;
+	int j;
+	char buff[100];
+	if(fp10 == NULL) {
+		printf("file not opened\n");
+	}
+	while(fgets(buff, 100, fp10) != 0 ) {            /*reads a line from a file*/
+		char str[60] = ""; 		
+		sscanf(buff, "%s%s%s%d%s%d", f, m, s, &f1, h, &f2);
+		strcat(str, f);
+		strcat(str, spc);
+		strcat(str, m);
+		strcat(str, spc);
+		strcat(str, s);
+		tmp2 = (node2 *)malloc(sizeof(node2));
+		tmp2->f.name = (char *)malloc(strlen(str) + 1);
+		strcpy(tmp2->f.name, str);
+		tmp2->f.email_Id = (char *)malloc(strlen(h) + 1);
+		strcpy(tmp2->f.email_Id, h);
+		tmp2->f.MISS = f1;
+		tmp2->f.mobile = f2;
+		if(l2->head2 == NULL) {
+			l2->head2 = l2->tail2 = tmp2;
+			tmp2->prev2 = tmp2->next2 = NULL;
+			l2->length2++;
+			fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.email_Id, tmp2->f.mobile);
+			continue;
+		}
+		p2 = l2->tail2;
+		tmp2->prev2 = p2;
+		tmp2->next2 = NULL;
+		p2->next2 = tmp2;
+		l2->tail2 = tmp2;
+		l2->length2++;
+		fprintf(fp2, "%s %d %s %d\n",tmp2->f.name, tmp2->f.MISS,tmp2->f.email_Id, tmp2->f.mobile);
+		continue;
+	}
+}
+
+void link(list *l, list1 *l1, list2 *l2, int MIS, int sem) { /*displays all the details of a particular student for a particular semester*/
 	node *pp;
 	node2 *pp2;
 	node1 *p1;

@@ -1,6 +1,22 @@
-/*STUDENT DATA MANAGEMENT SYSTEM*/
+/*PROJECT : STUDENT DATA MANAGEMENT SYSTEM*/
 
-/* This code has functions to add student's academic record, delete record, modify record and search record.The record is added, deleted, modified respectively from FILE also..This code also has functions to add, delete, modify a student's personal record.. The entries are entered manually. The code also has a function to add students' academic records from FILE directly.. It also has functions to add T1,T2 and ESE marks of four subjects of any semester of a student  and function to find total marks of a student for a particular semester.It also has a function to print all the details(academic, personal details and all the marks) of a particular student */
+/*****************************************************************************
+ * Copyright (C) Rupali Rajendra More morerr14.comp@coep.ac.in
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ *****************************************************************************/
 
 typedef struct record {
 	char *name;
@@ -52,31 +68,32 @@ typedef struct list2 {
 	struct node2 *head2, *tail2;
 	int length2;
 }list2;
-void init(list *l);                   /* initialises list having academic record*/
-void init1(list1 *l1);                  /* initialises list containing marks of student*/
-void init2(list2 *l2);                    /*initialises list having personal record*/
-void print(list *l);
-void print2(list2 *l2);
-void Add(list *l, char *name, int MIS, char *branch, int year, int pos, FILE *fp);
-void Add2(list2 *l2, char *name, int MIS, int mobile, char *email_Id, int loc, FILE *fp2);
-record *delet(list *l, int pos, FILE *fp, FILE *fp4);
-personal *delet2(list2 *l2, int loc, FILE *fp2, FILE *fp9);
+void init(list *l);   /*initialise list of academic record of students*/
+void init1(list1 *l1); /*initialise list of marks of studets*/
+void init2(list2 *l2);  /*initialise list of personal record of students*/
+void print_academic(list *l); /*display the list of academic records*/
+void print2_personal(list2 *l2);  /*display the list of personal records*/
+void Add_academic(list *l, char *name, int MIS, char *branch, int year, int pos, FILE *fp); /*add academic record before a particular record and write in file*/
+void Add2_personal(list2 *l2, char *name, int MIS, int mobile, char *email_Id, int loc, FILE *fp2); /*add personal record before a particular record and write in file*/
+record *delet_academic(list *l, int pos, FILE *fp, FILE *fp4);
+personal *delet2_personal(list2 *l2, int loc, FILE *fp2, FILE *fp9);
 record *search(list *l, int MIS);
 personal *search2(list2 *l2, int MISS);
-void Modify(list *l, int MIS, char *name, char *branch, int year, FILE *fp, FILE *fp6);
-void Modify2(list2 *l2, int MISS, char *name, int mobile, char *email_Id, FILE *fp2, FILE *fp8);
-void append(list *l, char *name, int MIS, char *branch, int year, FILE *fp);
-int length(list *l);
-int lenght1(list1 *l1);
-int length2(list2 *l2);
+void Modify_academic(list *l, int MIS, char *name, char *branch, int year, FILE *fp, FILE *fp6);
+void Modify2_personal(list2 *l2, int MISS, char *name, int mobile, char *email_Id, FILE *fp2, FILE *fp8);
+void append_academic(list *l, char *name, int MIS, char *branch, int year, FILE *fp); /*add a academic record at the end of list and write in file*/
+int length(list *l); /*find number of records in academic records list*/
+int lenght1(list1 *l1); /*find number of students who appeared for exam*/
+int length2(list2 *l2);  /*find number of records in personal records list*/
 void creatingID(list *l, int MIS);
-void insertfromfile(list *l, FILE *fp3, FILE *fp);          /*initialises list having personal record*/
-void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem);
+void academicfromfile(list *l, FILE *fp3, FILE *fp);  /*read academic record from file and add it*/
+void personalfromfile(list2 *l2, FILE *fp10, FILE *fp2);  /*read personal records from file and add it*/
+void T1Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int MI, int sem);  /*add T1 marks of student for a particular semester*/
 void printT1(list1 *l1, int sem);
-void T2Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem);
+void T2Marks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem);   /*add T2 marks of student for a particular semester*/
 void printT2(list1 *l1, int sem);
-void ESEMarks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem);
+void ESEMarks(list1 *l1, int MIS, int m1, int m2, int m3, int m4, int sem);   /*add ESE marks of student for a particular semester*/
 void printESE(list1 *l1, int sem);
-void Total(list1 *l1, int MIS, int sem, FILE *fp1);
+void Total(list1 *l1, int MIS, int sem, FILE *fp1);  /*find total marks of student for a particular semester and write all marks in file*/
 void printTOT(list1 *l1, int sem);
-void link(list *l, list1 *l1, list2 *l2, int MIS, int sem);
+void link(list *l, list1 *l1, list2 *l2, int MIS, int sem);  /*display all details of a student of a semester*/
